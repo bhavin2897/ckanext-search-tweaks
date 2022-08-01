@@ -5,11 +5,11 @@
 
 
 {% with recommended = h.spellcheck_did_you_mean(g.q, min_hits=count) -%}
-
+	<h6>HELLO</h6>
     {% if recommended %}
 	<div class="search-tweaks--did-you-mean">
 	    <span class="static-text">{{ _("Did you mean") }}</span>
-		<h6>HELLO</h6>
+
 	    {% set separator = joiner(", ") %}
 	    {% for option in recommended[:-1] -%}
 		{{ separator() }}{{ search_link(option) }}
