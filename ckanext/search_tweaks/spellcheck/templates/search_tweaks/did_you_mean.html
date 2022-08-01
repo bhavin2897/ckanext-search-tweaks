@@ -5,7 +5,8 @@
 
 
 {% with recommended = h.spellcheck_did_you_mean(g.q, min_hits=count) -%}
-	<h6>HELLO</h6>
+	<h6>{{ recommended }}</h6>
+
     {% if recommended %}
 	<div class="search-tweaks--did-you-mean">
 	    <span class="static-text">{{ _("Did you mean") }}</span>
