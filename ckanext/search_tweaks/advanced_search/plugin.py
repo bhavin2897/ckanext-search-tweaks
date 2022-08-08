@@ -35,6 +35,12 @@ DEFAULT_FORM_DEFINITION = json.dumps(
                 {"value": "private", "label": "Private"},
             ],
         },
+        "inchi":{
+            "type": "text",
+            "label": "InChi",
+            "placeholder": "Enter a search term",
+        }
+
     }
 )
 DEFAULT_FIELD_ORDER = None
