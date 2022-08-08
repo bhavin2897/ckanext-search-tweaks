@@ -39,6 +39,7 @@ DEFAULT_FORM_DEFINITION = json.dumps(
             "type": "text",
             "label": "InChi",
             "placeholder": "Enter a search term",
+            "default" : True,
         }
 
     }
