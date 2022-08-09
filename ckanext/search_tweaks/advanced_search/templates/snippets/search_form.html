@@ -27,6 +27,10 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% set solr_syntax_url = solr_syntax_url|default('https://solr.apache.org/guide/6_6/common-query-parameters.html') %}
 {% set solr_syntax_blank = solr_syntax_blank|default(true) %}
 
+
+
+{% ckan_extends %}
+
 {% set default_search_button %}
 <span class="input-group-btn">
     <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
@@ -42,6 +46,8 @@ solr_syntax_blank - open SOLR syntax article in the new tab
     <input type="text" class="form-control input-lg"
 	   name="q" value="{{ query }}" autocomplete="off"
 	   placeholder="{{ placeholder }}">
+
+
      {% block search_input_button %}
       <span class="input-group-btn">
         <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{_('Submit')}}">
@@ -84,9 +90,17 @@ solr_syntax_blank - open SOLR syntax article in the new tab
     </div>
     <div class="solr-search-widget">
 	{{ solr_input }}
+
+
     </div>
     <div class="advanced-search-submit">
-	{{ search_button }}
+	{% block search_input_button %}
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{_('Submit')}}">
+          <i class="fa fa-search"></i>
+        </button>
+      </span>
+      {% endblock %}
     </div>
 
 	{% block search_options %}
@@ -114,3 +128,5 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 		</div>
 	{% endblock search_options %}
 </div>
+
+{{ super() }}
