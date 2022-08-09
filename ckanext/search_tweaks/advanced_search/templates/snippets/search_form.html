@@ -11,6 +11,7 @@ solr_syntax_url - URL for SOLR syntax article
 solr_syntax_blank - open SOLR syntax article in the new tab
 #}
 
+{% ckan_extends %}
 {% asset "search_tweaks_advanced_search/advanced_search" %}
 
 {% set form_config = form_config|default(h.advanced_search_form_config())|tojson|forceescape %}
@@ -69,16 +70,38 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 	 {% if enable_advanced %} data-module-enabled{% endif %}>
     </div>
 
-    <div class="original-search-widget">
-	{{ search_input }}
+    {% block search_input %}
+    {% if h.search_autocomplete_enable_default_implementation() %}
+        <div class="search-autocomplete-wrapper"
+             data-module="ckanext-search-autocomplete"
+             data-module-suggestion-box="#search-autocomplete--suggestion-box"
+             data-module-autocomplete-input="#field-giant-search" >
+            {{ super() }}
+        </div>
+    {% else %}
+        {{ super() }}
+    {% endif %}
 
-    </div>
-    <div class="solr-search-widget">
-	{{ solr_input }}
-    </div>
-    <div class="advanced-search-submit">
-	{{ search_button }}
-    </div>
+{% endblock search_input %}
+
+{% block search_input_button %}
+    {% if h.search_autocomplete_enable_default_implementation() %}
+        <ul id="search-autocomplete--suggestion-box" class="suggestion-box">
+            {% set suggestion_groups = [
+                ('datasets', 'Relevant datasets'),
+                ('categories','Browse filters')
+            ]
+            %}
+
+            {% for section, label in suggestion_groups %}
+                <li data-section="{{ section }}" class="suggestion-section">
+                    <ul class="suggestions" data-label="{{ _(label) }}"></ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {{ super() }}
+{% endblock search_input_button %}
 
 	{% block search_options %}
 		<div class="advanced-toggles">
