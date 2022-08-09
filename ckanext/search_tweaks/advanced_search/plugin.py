@@ -5,8 +5,8 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 from ckan.exceptions import CkanConfigurationException
 
-CONFIG_FORM_DEFINITION = "ckanext.search_tweaks.snippets.fields"
-CONFIG_FIELD_ORDER = "ckanext.search_tweaks.snippets.order"
+CONFIG_FORM_DEFINITION = "ckanext.search_tweaks.advanced_search.fields"
+CONFIG_FIELD_ORDER = "ckanext.search_tweaks.advanced_search.order"
 
 DEFAULT_FORM_DEFINITION = json.dumps(
     {

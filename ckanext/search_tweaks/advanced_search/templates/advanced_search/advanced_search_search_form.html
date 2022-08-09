@@ -11,7 +11,6 @@ solr_syntax_url - URL for SOLR syntax article
 solr_syntax_blank - open SOLR syntax article in the new tab
 #}
 
-
 {% asset "search_tweaks_advanced_search/advanced_search" %}
 
 {% set form_config = form_config|default(h.advanced_search_form_config())|tojson|forceescape %}
@@ -27,10 +26,6 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% set solr_syntax_url = solr_syntax_url|default('https://solr.apache.org/guide/6_6/common-query-parameters.html') %}
 {% set solr_syntax_blank = solr_syntax_blank|default(true) %}
 
-
-
-{% ckan_extends %}
-
 {% set default_search_button %}
 <span class="input-group-btn">
     <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
@@ -38,7 +33,6 @@ solr_syntax_blank - open SOLR syntax article in the new tab
     </button>
 </span>
 {% endset %}
-
 {% set search_button = search_button|default(default_search_button) %}
 
 {% set default_search_input %}
@@ -46,10 +40,9 @@ solr_syntax_blank - open SOLR syntax article in the new tab
     <input type="text" class="form-control input-lg"
 	   name="q" value="{{ query }}" autocomplete="off"
 	   placeholder="{{ placeholder }}">
-		{{ search_button }}
+    {{ search_button }}
 </div>
 {% endset %}
-
 {% set search_input = search_input|default(default_search_input) %}
 
 {% set default_solr_input %}
@@ -82,17 +75,9 @@ solr_syntax_blank - open SOLR syntax article in the new tab
     </div>
     <div class="solr-search-widget">
 	{{ solr_input }}
-
-
     </div>
     <div class="advanced-search-submit">
-	{% block search_input_button %}
-      <span class="input-group-btn">
-        <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{_('Submit')}}">
-          <i class="fa fa-search"></i>
-        </button>
-      </span>
-      {% endblock %}
+	{{ search_button }}
     </div>
 
 	{% block search_options %}
@@ -120,5 +105,3 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 		</div>
 	{% endblock search_options %}
 </div>
-
-{{ super() }}

@@ -93,7 +93,7 @@ setup(
         search_tweaks_query_relevance=ckanext.search_tweaks.query_relevance.plugin:QueryRelevancePlugin
         search_tweaks_field_relevance=ckanext.search_tweaks.field_relevance.plugin:FieldRelevancePlugin
         search_tweaks_spellcheck=ckanext.search_tweaks.spellcheck.plugin:SpellcheckPlugin
-        search_tweaks_advanced_search=ckanext.search_tweaks.snippets.plugin:AdvancedSearchPlugin
+        search_tweaks_advanced_search=ckanext.search_tweaks.advanced_search.plugin:AdvancedSearchPlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan
