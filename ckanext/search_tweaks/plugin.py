@@ -34,7 +34,6 @@ class SearchTweaksPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IPackageController, inherit=True)
 
     # IClick
-
     def get_commands(self):
         return cli.get_commands()
 
@@ -142,3 +141,6 @@ def _get_fuzzy_distance() -> int:
         )
         distance = 2
     return distance
+
+
+

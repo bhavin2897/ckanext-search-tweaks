@@ -10,12 +10,6 @@ CONFIG_FIELD_ORDER = "ckanext.search_tweaks.advanced_search.order"
 
 DEFAULT_FORM_DEFINITION = json.dumps(
     {
-        "text": {
-            "type": "text",
-            "label": "Any listed item",
-            "placeholder": "Enter a search term",
-            "default": True,
-        },
         "title": {
             "type": "text",
             "label": "Title",
