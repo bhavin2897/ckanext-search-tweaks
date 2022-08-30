@@ -15,20 +15,13 @@ DEFAULT_FORM_DEFINITION = json.dumps(
             "label": "Title",
             "placeholder": "Enter a search term",
         },
+
         "notes": {
             "type": "text",
             "label": "Description",
             "placeholder": "Enter a search term",
         },
-        "capacity": {
-            "type": "select",
-            "label": "Visibility",
-            "placeholder": "Filter data by visibility",
-            "options": [
-                {"value": "public", "label": "Public"},
-                {"value": "private", "label": "Private"},
-            ],
-        },
+
         "inchi":{
             "type": "text",
             "label": "InChI",
