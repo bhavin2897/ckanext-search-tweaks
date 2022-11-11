@@ -30,7 +30,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% set default_search_button %}
 <span class="input-group-btn">
     <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
-	<i class="fa fa-search"></i>
+	<i class="fa fa-search"> Search </i>
     </button>
 </span>
 {% endset %}
@@ -71,22 +71,17 @@ solr_syntax_blank - open SOLR syntax article in the new tab
     </div>
 
     <div class="original-search-widget">
-	{{ search_input }}
-
+		{{ search_input }}
     </div>
-    <div class="solr-search-widget">
-	{{ solr_input }}
-    </div>
-    <div class="advanced-search-submit">
-	{{ search_button }}
-    </div>
+	<div class="advanced-search-submit">  {{ search_button }} </div>
 
 	{% block search_options %}
 		<div class="advanced-toggles">
 			{% block advaned_toggle %}
 				<div class="toggle-item enable-advanced">
-					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off" {% if enable_advanced or enable_solr %} checked{% endif %}/>
-					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Advanced search') }}</label>
+					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
+						   {% if enable_advanced or enable_solr %} checked {% endif %}/>
+					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
 				</div>
 			{% endblock advaned_toggle %}
 			{#
