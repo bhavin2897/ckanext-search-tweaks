@@ -27,23 +27,33 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% set solr_syntax_blank = solr_syntax_blank|default(true) %}
 
 
-{% set default_search_button %}
+<!--{% set default_search_button %}-->
+<!--<span class="input-group-btn">-->
+<!--    <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">-->
+<!--	<i class="fa fa-search"> </i>-->
+<!--    </button>-->
+<!--</span>-->
+<!--{% endset %}-->
+
+{% set search_button %}
 <span class="input-group-btn">
     <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
-	<i class="fa fa-search"> NEXT </i>
+	<i class="fa fa-search"> </i>
     </button>
 </span>
 {% endset %}
-{% set search_button = search_button|default(default_search_button) %}
+
 
 {% set default_search_input %}
 <div class="input-group search-input-group">
     <input type="text" class="form-control input-lg"
 	   name="q" value="{{ query }}" autocomplete="off"
 	   placeholder="{{ placeholder }}">
-    {{ search_button }}
+    	{{ search_button }}
 </div>
 {% endset %}
+
+
 {% set search_input = search_input|default(default_search_input) %}
 
 {% set default_solr_input %}
@@ -72,8 +82,10 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 
     <div class="original-search-widget">
 		{{ search_input }}
-    </div>
-	<div class="advanced-search-submit">  {{ search_button }} </div>
+		<div class="advanced-search-submit">  {{ search_button }} </div>
+	</div>
+
+
 
 	{% block search_options %}
 		<div class="advanced-toggles">
