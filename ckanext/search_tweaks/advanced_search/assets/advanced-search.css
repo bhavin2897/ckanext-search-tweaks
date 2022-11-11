@@ -16,7 +16,8 @@ display:inline
 }
 
 .advanced-search-submit {
-display:inline
+display:inline;
+margin-right: 200px
 }
 .search-tweaks-advanced-search.enabled .advanced-search-submit {
   display: inline;
