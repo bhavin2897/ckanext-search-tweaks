@@ -16,9 +16,14 @@ display:inline
 }
 
 .advanced-search-submit {
-display:none;
-margin-right: 200px
 }
+
+.advanced-search-submit .btn{
+background:#164959;
+font: IBM Plex Sans
+color: #FFFFFF
+}
+
 .search-tweaks-advanced-search.enabled .advanced-search-submit {
   display: inline;
 }
