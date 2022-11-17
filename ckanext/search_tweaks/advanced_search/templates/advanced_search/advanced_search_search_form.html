@@ -44,6 +44,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% endset %}
 
 
+
 {% set default_search_input %}
 <div class="input-group search-input-group">
     <input type="text" class="form-control input-lg"
@@ -77,23 +78,20 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 	 data-module-config="{{ form_config }}"
 	 data-module-prefix="{{ prefix }}"
 	 data-module-url-init
-	 {% if enable_advanced %} data-module-enabled{% endif %}>
-    </div>
+		 {% if enable_advanced %} data-module-enabled {% endif %}> </div>
 
-    <div class="original-search-widget">
-		{{ search_input }}
-	</div>
-	<div class="advanced-search-submit btn">  {{ search_button }} </div>
+	<div class="original-search-widget"> {{ search_input }}</div>
+	<div class="advanced-search-submit">  {{ search_button }} </div>
 
 	{% block search_options %}
 		<div class="advanced-toggles">
-			{% block advaned_toggle %}
+			{% block advanced_toggle %}
 				<div class="toggle-item enable-advanced">
 					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
 						   {% if enable_advanced or enable_solr %} checked {% endif %}/>
 					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
 				</div>
-			{% endblock advaned_toggle %}
+			{% endblock advanced_toggle %}
 			{#
 <!--			{% block solr_syntax %}-->
 <!--				<div class="toggle-item enable-solr">-->
