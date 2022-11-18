@@ -21,11 +21,9 @@ display: none;
 }
 
 .search-tweaks-advanced-search.enabled .advanced-search-submit {
-  padding:10px 10px; border-radius:5px; width:30%;
-  display:inline-block;
-  background:#164959;
-  color: #FFFFFF;
+display: inline-block;
 }
+
 .search-tweaks-advanced-search.enabled.use-solr-query .advanced-search-submit {
   display: none;
 }
