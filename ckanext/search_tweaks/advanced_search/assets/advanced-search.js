@@ -15,7 +15,7 @@ ckan.module("search-tweaks-advanced-search", function ($) {
       this.toggles
         .find(".enable-advanced")
         .on("change", this._onEnableAdvanced);
-      this.toggles.find(".enable-solr").on("change", this._onEnableSolr);
+      this.toggles.find(".enable-image").on("change", this._onEnableSolr);
       this.el.on("keyup", this._onKeyUp);
 
       if (this.options.enableAdvanced) {
@@ -62,7 +62,7 @@ ckan.module("search-tweaks-advanced-search", function ($) {
       this.el.removeClass("enabled");
       this.toggles
         .removeClass("advanced-active")
-        .find(".enable-solr input")
+        .find(".enable-image input")
         .prop("checked", false);
       this.disableSolr();
       this.sandbox.publish(EVENT_TOGGLE_SEARCH, false);

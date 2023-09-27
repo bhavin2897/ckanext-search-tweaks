@@ -27,18 +27,50 @@ DEFAULT_FORM_DEFINITION = json.dumps(
             "label": "InChI",
             "placeholder": "Enter a search term",
             "default" : True,
+        },
+
+        "inchi_key":{
+            "type": "text",
+            "label": "InChIKey",
+            "placeholder": "Enter a search term",
         }
 
     }
 )
 DEFAULT_FIELD_ORDER = None
 
+DEFAULT_FIELD_ORDER_IMAGE = None
+
+
+DEFAULT_FORM_DEFINITION_IMAGE = json.dumps(
+    {
+            "inchi_key":{
+            "type": "text",
+            "label": "InChIKey",
+            "placeholder": "Enter a search term"
+    }
+    }
+)
 
 def form_config():
     definition = json.loads(
         tk.config.get(CONFIG_FORM_DEFINITION, DEFAULT_FORM_DEFINITION)
     )
     order = tk.aslist(tk.config.get(CONFIG_FIELD_ORDER, DEFAULT_FIELD_ORDER))
+    if not order:
+        order = list(definition)
+    return {
+        "definitions": definition,
+        "order": order,
+    }
+
+
+def form_config_image():
+
+    definition = json.loads(
+        tk.config.get(CONFIG_FORM_DEFINITION, DEFAULT_FORM_DEFINITION_IMAGE)
+    )
+    order = tk.aslist(tk.config.get(CONFIG_FIELD_ORDER, DEFAULT_FIELD_ORDER_IMAGE))
     if not order:
         order = list(definition)
     return {
@@ -83,6 +115,7 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
     def get_helpers(self):
         return {
             "advanced_search_form_config": form_config,
+            "advanced_search_form_config_image" : form_config_image,
         }
 
     # IPackageController
@@ -93,3 +126,4 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
             search_params.setdefault("q", "")
             search_params["q"] += " " + solr_q
         return search_params
+#name="ext_composite_value" value="{{ query }}"

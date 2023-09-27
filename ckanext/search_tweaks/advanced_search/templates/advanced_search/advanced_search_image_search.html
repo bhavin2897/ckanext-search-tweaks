@@ -1,0 +1,85 @@
+{#
+config - configuration for advanced form. Use `advanced_search_form_config` helper as an example
+enable_advanced - enable advanced search
+enable_solr - enable Solr search
+prefix - prefix used for field names
+search_input - basic search field
+solr_input - Solr field
+search_button - basic search button
+labels - dict with all the labels/placeholder used through form. Check template in order to find on, which keys are there
+solr_syntax_url - URL for SOLR syntax article
+solr_syntax_blank - open SOLR syntax article in the new tab
+#}
+
+{% asset "search_tweaks_advanced_search/advanced_search" %}
+
+{% set form_config_image = form_config_image|default(h.advanced_search_form_config_image())|tojson|forceescape %}
+{% set enable_solr = enable_solr|default(request.args.ext_solr_q | length > 0) %}
+{% set prefix = prefix|default(h.composite_search_get_prefix()) %}
+
+{% set ns = namespace(enable_advanced=false) %}
+{% for arg in request.args if arg.startswith(prefix) %}
+    {% set ns.enable_advanced = true %}
+{% endfor %}
+{% set enable_advanced = enable_advanced|default(ns.enable_advanced) %}
+{% set labels = labels|default({}) %}
+{% set solr_syntax_url = solr_syntax_url|default('https://solr.apache.org/guide/6_6/common-query-parameters.html') %}
+{% set solr_syntax_blank = solr_syntax_blank|default(true) %}
+
+
+
+{% set search_button %}
+<span class="input-group-btn">
+    <button id="search-button-image" class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}" >
+	<i class="fa fa-search"> </i>
+    </button>
+</span>
+{% endset %}
+
+
+
+{% set default_search_input %}
+
+<div class="input-group search-input-group">
+    <input type="text" class="form-control input-lg" id="search-input" name=""
+		   autocomplete="off" placeholder= "example: ZZ" >
+    	{{ search_button }}
+</div>
+
+{% endset %}
+
+
+{% set search_input = search_input|default(default_search_input) %}
+
+
+	<div class="search-tweaks-advanced-search"
+		 data-module="search-tweaks-advanced-search" >
+
+    	<div data-module="composite-search" class="advanced-search-widget"
+	 		data-module-config="{{ form_config_image }}"
+	 		data-module-prefix="{{ prefix }}"
+	 		data-module-url-init
+		 	{% if enable_advanced %} data-module-enabled {% endif %}> </div>
+
+	<div class="original-search-widget"> {{ search_input }}</div>
+
+</div>
+
+
+<script>
+        // JavaScript code for handling the search
+        const searchInput = document.getElementById('search-input');
+
+        // Function to extract the query string based on the pattern
+        function generateQueryString() {
+            const queryString = searchInput.value;
+
+        }
+
+        // You can also listen for Enter key press and trigger the search
+        searchInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                generateQueryString();
+            }
+        });
+    </script>

@@ -1,7 +1,7 @@
 {#
 config - configuration for advanced form. Use `advanced_search_form_config` helper as an example
 enable_advanced - enable advanced search
-enable_solr - enable Solr search
+enable_mol - enable Solr search
 prefix - prefix used for field names
 search_input - basic search field
 solr_input - Solr field
@@ -14,7 +14,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% asset "search_tweaks_advanced_search/advanced_search" %}
 
 {% set form_config = form_config|default(h.advanced_search_form_config())|tojson|forceescape %}
-{% set enable_solr = enable_solr|default(request.args.ext_solr_q | length > 0) %}
+{% set enable_mol = enable_mol|default(request.args.ext_solr_q | length > 0) %}
 {% set prefix = prefix|default(h.composite_search_get_prefix()) %}
 
 {% set ns = namespace(enable_advanced=false) %}
@@ -37,7 +37,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 
 {% set search_button %}
 <span class="input-group-btn">
-    <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
+    <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}" formaction="/search_bar">
 	<i class="fa fa-search"> </i>
     </button>
 </span>
@@ -71,8 +71,8 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 
 <div class="search-tweaks-advanced-search"
      data-module="search-tweaks-advanced-search"
-     {% if enable_advanced or enable_solr %} data-module-enable-advanced{% endif %}
-     {% if enable_solr %} data-module-enable-solr{% endif %}>
+     {% if enable_advanced or enable_mol %} data-module-enable-advanced{% endif %}
+     {% if enable_mol %} data-module-enable-solr{% endif %}>
 
     <div data-module="composite-search" class="advanced-search-widget"
 	 data-module-config="{{ form_config }}"
@@ -88,16 +88,16 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 			{% block advanced_toggle %}
 				<div class="toggle-item enable-advanced">
 					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
-						   {% if enable_advanced or enable_solr %} checked {% endif %}/>
+						   {% if enable_advanced or enable_mol %} checked {% endif %}/>
 					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
 				</div>
 			{% endblock advanced_toggle %}
-
+			{#
 <!--			{% block solr_syntax %}-->
 <!--				<div class="toggle-item enable-solr">-->
-<!--					<input id="toggle-enable-solr" type="checkbox"  autocomplete="off" {% if enable_solr %} checked{% endif %}/>-->
+<!--					<input id="toggle-enable-solr" type="checkbox"  autocomplete="off" {% if enable_mol %} checked{% endif %}/>-->
 <!--					<label for="toggle-enable-solr">-->
-<!--					{{ labels.solr_toggle or _('Image Search') }}-->
+<!--					{{ labels.solr_toggle or _('Add query syntax to search') }}-->
 <!--					</label>-->
 <!--					{% block solr_syntax_url %}-->
 <!--						<a {% if solr_syntax_blank %}target="_blank"{% endif %} href="{{ solr_syntax_url }}">-->
@@ -106,7 +106,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 <!--						</a>-->
 <!--					{% endblock solr_syntax_url %}-->
 <!--				</div>-->
-<!--			{% endblock solr_syntax %}-->
-	</div>
+<!--			{% endblock solr_syntax %}--> #}
+		</div>
 	{% endblock search_options %}
 </div>
