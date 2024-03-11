@@ -90,6 +90,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
 						   {% if enable_advanced or enable_mol %} checked {% endif %}/>
 					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
+					<button type="reset" class="btn btn-default">Reset Filters </button>
 				</div>
 			{% endblock advanced_toggle %}
 			{#

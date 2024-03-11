@@ -80,7 +80,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 	 data-module-url-init
 		 {% if enable_advanced %} data-module-enabled {% endif %}> </div>
 
-	<div class="original-search-widget"> {{ search_input }}</div>
+	<div  class="original-search-widget"> {{ search_input }}</div>
 <!--	<div class="advanced-search-submit">  {{ search_button }} </div>-->
 
 	{% block search_options %}
@@ -90,6 +90,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
 						   {% if enable_advanced or enable_solr %} checked {% endif %}/>
 					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
+					<input type="button" value="Reset Filters" onclick="resetFilters()" style=background:none;border:none;color:grey;cursor:pointer;text-decoration:underline;">
 				</div>
 			{% endblock advanced_toggle %}
 
@@ -110,3 +111,10 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 	</div>
 	{% endblock search_options %}
 </div>
+
+
+<script>
+    function resetFilters() {
+        document.getElementById('toggle-enable-advanced').reset();
+    }
+</script>
