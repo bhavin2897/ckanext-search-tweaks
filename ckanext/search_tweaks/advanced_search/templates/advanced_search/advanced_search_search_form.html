@@ -114,7 +114,19 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 
 
 <script>
-    function resetFilters() {
-        document.getElementById('dataset-search-form').reset();
+function resetFilters() {
+    // Find all elements with the class 'toggle-item enable-advanced'
+    var elements = document.getElementsByClassName('search-tweaks-advanced-search');
+    // Assuming the form is the first or only element, adjust if necessary
+    if(elements.length > 0) {
+        var formElement = elements[0].querySelector('form');
+        if(formElement) {
+            formElement.reset();
+        } else {
+            console.error('No form found within .toggle-item.enable-advanced');
+        }
+    } else {
+        console.error('.toggle-item.enable-advanced class not found');
     }
+}
 </script>
