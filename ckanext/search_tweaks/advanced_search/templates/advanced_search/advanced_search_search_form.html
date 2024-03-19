@@ -48,8 +48,7 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% set default_search_input %}
 <div class="input-group search-input-group">
     <input type="text" class="form-control input-lg"
-	   name="q" value="{{ query }}" autocomplete="off"
-	   placeholder="{{ placeholder }}">
+	   name="q" value="{{ request.params.q | default('') }}" autocomplete="off" placeholder="{{ placeholder }}">
     	{{ search_button }}
 </div>
 {% endset %}
@@ -81,7 +80,6 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 		 {% if enable_advanced %} data-module-enabled {% endif %}> </div>
 
 	<div  class="original-search-widget"> {{ search_input }}</div>
-<!--	<div class="advanced-search-submit">  {{ search_button }} </div>-->
 
 	{% block search_options %}
 		<div class="advanced-toggles">
