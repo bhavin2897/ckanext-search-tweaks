@@ -33,6 +33,12 @@ DEFAULT_FORM_DEFINITION = json.dumps(
             "type": "text",
             "label": "InChIKey",
             "placeholder": "Enter a search term",
+        },
+
+        "measurement_technique": {
+            "type": "text",
+            "label": "Measurement Technique",
+            "placeholder": "ex:  ",
         }
 
     }
@@ -126,4 +132,3 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
             search_params.setdefault("q", "")
             search_params["q"] += " " + solr_q
         return search_params
-#name="ext_composite_value" value="{{ query }}"
