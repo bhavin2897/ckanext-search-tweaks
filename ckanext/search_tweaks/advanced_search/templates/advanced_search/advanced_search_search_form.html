@@ -1,57 +1,67 @@
-{#
-config - configuration for advanced form. Use `advanced_search_form_config` helper as an example
-enable_advanced - enable advanced search
-enable_solr - enable Solr search
-prefix - prefix used for field names
-search_input - basic search field
-solr_input - Solr field
-search_button - basic search button
-labels - dict with all the labels/placeholder used through form. Check template in order to find on, which keys are there
-solr_syntax_url - URL for SOLR syntax article
-solr_syntax_blank - open SOLR syntax article in the new tab
-#}
+{# Existing Jinja2 comments and configuration for the advanced form #}
 
 {% asset "search_tweaks_advanced_search/advanced_search" %}
+{% asset "search_autocomplete/search_autocomplete-css" %}
+{% asset "search_autocomplete/search_autocomplete-js" %}
+
+<!-- Include jQuery and jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 {% set form_config = form_config|default(h.advanced_search_form_config())|tojson|forceescape %}
 {% set enable_solr = enable_solr|default(request.args.ext_solr_q | length > 0) %}
 {% set prefix = prefix|default(h.composite_search_get_prefix()) %}
-
+{% set labels = labels|default({}) %}
 {% set ns = namespace(enable_advanced=false) %}
-{% for arg in request.args if arg.startswith(prefix) %}
-    {% set ns.enable_advanced = true %}
+{% for arg in request.args %}
+    {% if arg.startswith(prefix) %}
+        {% set ns.enable_advanced = true %}
+    {% endif %}
 {% endfor %}
 {% set enable_advanced = enable_advanced|default(ns.enable_advanced) %}
-{% set labels = labels|default({}) %}
 {% set solr_syntax_url = solr_syntax_url|default('https://solr.apache.org/guide/6_6/common-query-parameters.html') %}
 {% set solr_syntax_blank = solr_syntax_blank|default(true) %}
 
-
-<!--{% set default_search_button %}-->
-<!--<span class="input-group-btn">-->
-<!--    <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">-->
-<!--	<i class="fa fa-search"> </i>-->
-<!--    </button>-->
-<!--</span>-->
-<!--{% endset %}-->
-
 {% set search_button %}
-<span class="input-group-btn">
+
+{# autocomplete addition for the search bar when the search is on default mode. On Advance Search, autocomplete doesnt work #}
+
+{% if h.search_autocomplete_enable_default_implementation() %}
+    <ul id="search-autocomplete--suggestion-box" class="suggestion-box">
+            {% set suggestion_groups = [
+                ('datasets', 'Relevant datasets'),
+                ('categories','Browse filters')
+            ]
+            %}
+
+            {% for section, label in suggestion_groups %}
+                <li data-section="{{ section }}" class="suggestion-section">
+                    <ul class="suggestions" data-label="{{ _(label) }}"></ul>
+                </li>
+            {% endfor %}
+</ul>
+{% endif %}
+  <span class="input-group-btn">
     <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
 	<i class="fa fa-search"> </i>
     </button>
 </span>
 {% endset %}
 
-
-
 {% set default_search_input %}
-<div class="input-group search-input-group">
-    <input type="text" class="form-control input-lg"
-	   name="q" value="{{ request.params.q | default('') }}" autocomplete="off" placeholder="{{ placeholder }}">
-    	{{ search_button }}
+<div class="input-group search-input-group search-autocomplete-wrapper"
+     data-module="ckanext-search-autocomplete"
+     data-module-suggestion-box="#search-autocomplete--suggestion-box"
+     data-module-autocomplete-input="#field-giant-search">
+
+	<input type="text" class="form-control input-lg" id="field-giant-search"
+           name="q" value="{{ request.params.q | default('') }}" autocomplete="off" placeholder="{{ labels.search_placeholder or 'Search datasets' }}">
+
+    {{ search_button }}
 </div>
 {% endset %}
+
 
 
 {% set search_input = search_input|default(default_search_input) %}
@@ -59,53 +69,84 @@ solr_syntax_blank - open SOLR syntax article in the new tab
 {% set default_solr_input %}
 <div class="input-group search-input-group">
     <input type="text" class="form-control input-lg"
-	   value="{{ request.args.ext_solr_q }}" autocomplete="off"
-	   name="ext_solr_q" disabled
-	   placeholder="{{ labels.solr_placeholder or _('metadata_created:[NOW/YEAR TO *] -tags:Health') }}" >
+           value="{{ request.args.ext_solr_q }}" autocomplete="off"
+           name="ext_solr_q" disabled
+           placeholder="{{ labels.solr_placeholder or _('metadata_created:[NOW/YEAR TO *] -tags:Health') }}">
     {{ search_button }}
 </div>
 {% endset %}
 {% set solr_input = solr_input|default(default_solr_input) %}
 
-
 <div class="search-tweaks-advanced-search"
      data-module="search-tweaks-advanced-search"
+     data-module-autocomplete-input="#field-giant-search"
+     data-module-suggestion-box="#search-autocomplete--suggestion-box"
      {% if enable_advanced or enable_solr %} data-module-enable-advanced{% endif %}
      {% if enable_solr %} data-module-enable-solr{% endif %}>
 
     <div data-module="composite-search" class="advanced-search-widget"
-	 data-module-config="{{ form_config }}"
-	 data-module-prefix="{{ prefix }}"
-	 data-module-url-init
-		 {% if enable_advanced %} data-module-enabled {% endif %}> </div>
+         data-module-config="{{ form_config }}"
+         data-module-prefix="{{ prefix }}"
+         data-module-url-init
+         {% if enable_advanced %} data-module-enabled {% endif %}></div>
 
-	<div  class="original-search-widget"> {{ search_input }}</div>
+    <div class="original-search-widget">
+        {{ search_input }}
+    </div>
 
-	{% block search_options %}
-		<div class="advanced-toggles">
-			{% block advanced_toggle %}
-				<div class="toggle-item enable-advanced">
-					<input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
-						   {% if enable_advanced or enable_solr %} checked {% endif %}/>
-					<label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
-				</div>
-			{% endblock advanced_toggle %}
-
-<!--			{% block solr_syntax %}-->
-<!--				<div class="toggle-item enable-solr">-->
-<!--					<input id="toggle-enable-solr" type="checkbox"  autocomplete="off" {% if enable_solr %} checked{% endif %}/>-->
-<!--					<label for="toggle-enable-solr">-->
-<!--					{{ labels.solr_toggle or _('Image Search') }}-->
-<!--					</label>-->
-<!--					{% block solr_syntax_url %}-->
-<!--						<a {% if solr_syntax_blank %}target="_blank"{% endif %} href="{{ solr_syntax_url }}">-->
-<!--						<i class="fa fa-info-circle" data-placement="top" data-toggle="tooltip"-->
-<!--						title="{{ labels.solr_explanation or _('This adds SOLR query language, for more information on how to use click here') }}"></i>-->
-<!--						</a>-->
-<!--					{% endblock solr_syntax_url %}-->
-<!--				</div>-->
-<!--			{% endblock solr_syntax %}-->
-	</div>
-	{% endblock search_options %}
+    {% block search_options %}
+    <div class="advanced-toggles">
+        {% block advanced_toggle %}
+        <div class="toggle-item enable-advanced">
+            <input id="toggle-enable-advanced" type="checkbox" autocomplete="off"
+                   {% if enable_advanced or enable_solr %} checked {% endif %}/>
+            <label for="toggle-enable-advanced">{{ labels.advanced_toggle or _('Show Advanced search') }}</label>
+        </div>
+        {% endblock advanced_toggle %}
+    </div>
+    {% endblock search_options %}
 </div>
 
+<script>
+    $(document).ready(function() {
+        console.log("Initializing autocomplete...");
+
+        if ($('#search-autocomplete--suggestion-box').length === 0) {
+            console.error("Suggestion box element is missing from the DOM.");
+        } else {
+            console.log("Suggestion box element found.");
+        }
+
+        $('#field-giant-search').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: '/api/3/action/autocomplete_search',
+                    dataType: 'json',
+                    data: {
+                        q: request.term
+                    },
+                    success: function(data) {
+                        if (data && data.result && data.result.suggestions) {
+                            response($.map(data.result.suggestions, function(item) {
+                                return {
+                                    label: item,
+                                    value: item
+                                };
+                            }));
+                        } else {
+                            response([]);
+                        }
+                    },
+                    error: function() {
+                        console.error('Autocomplete API call failed.');
+                    }
+                });
+            },
+            minLength: 2,
+            select: function(event, ui) {
+                $('#field-giant-search').val(ui.item.value);
+                $('#dataset-search-form').submit();
+            }
+        });
+    });
+</script>

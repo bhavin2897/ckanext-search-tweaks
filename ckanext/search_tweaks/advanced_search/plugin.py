@@ -3,7 +3,10 @@ import json
 from typing import Any
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
+import logging
 from ckan.exceptions import CkanConfigurationException
+
+log = logging.getLogger(__name__)
 
 CONFIG_FORM_DEFINITION = "ckanext.search_tweaks.advanced_search.fields"
 CONFIG_FIELD_ORDER = "ckanext.search_tweaks.advanced_search.order"
@@ -13,26 +16,26 @@ DEFAULT_FORM_DEFINITION = json.dumps(
         "title": {
             "type": "text",
             "label": "Title",
-            "placeholder": "Enter a search term",
+            "placeholder": "eg: ROSUVASTATIN",
         },
 
         "notes": {
             "type": "text",
             "label": "Description",
-            "placeholder": "Enter a search term",
+            "placeholder": "eg: dataset contains NMR",
         },
 
         "inchi":{
             "type": "text",
             "label": "InChI",
-            "placeholder": "Enter a search term",
+            "placeholder": "eg: InChI=1S/C9H12O3/c1-11-9(12-2)7-4-3-5-8(10)6-7/h3-6,9-10H,1-2H3",
             "default" : True,
         },
 
         "inchi_key":{
             "type": "text",
             "label": "InChIKey",
-            "placeholder": "Enter a search term",
+            "placeholder": "eg:  CJTUFUALQDKYIB-UHFFFAOYSA-N",
         },
 
         "measurement_technique": {
@@ -128,6 +131,7 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
 
     def before_search(self, search_params: dict[str, Any]):
         solr_q = search_params.get("extras", {}).get("ext_solr_q", None)
+
         if solr_q:
             search_params.setdefault("q", "")
             search_params["q"] += " " + solr_q
