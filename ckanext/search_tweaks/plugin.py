@@ -7,6 +7,8 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
 from ckan.lib.search.query import QUERY_FIELDS
 
+from flask import jsonify
+from ckanext.search_tweaks.controller import molecule_name_search as molecule_name_search
 from . import cli, boost_preffered, feature_disabled
 from .interfaces import ISearchTweaks
 
@@ -50,12 +52,33 @@ class SearchTweaksPlugin(plugins.SingletonPlugin):
 
         if boost_preffered() and search_params["defType"] == "edismax":
             _set_boost(search_params)
+
         else:
             _set_bf(search_params)
 
+        # search based on PubChem Search when a string is provided & matches with Search
+        if "fq" in search_params and search_params.get('q', '').strip():
+            # Check if "+dataset_type:molecule" is in 'fq'
+            # TODO: Comments or Logging debug comments should be removed
+
+            if "+dataset_type:molecule" in search_params["fq"]:
+                log.debug("Molecule search triggered for PubChem.")
+
+                # Perform molecule search via PubChem
+                data_dict = molecule_search_pubchem(search_params=search_params)
+
+                if data_dict and 'q' in data_dict and data_dict['q']:
+                    # Append new query to existing query
+                    search_params['q'] = f"{search_params['q']} OR {data_dict['q']}"
+                    log.debug(f"Updated search_params['q']: {search_params['q']}")
+                else:
+                    log.warning("No valid data_dict['q'] returned from molecule_search_pubchem.")
+        else:
+            log.debug("Search is empty and goes to default")
+
         _set_qf(search_params)
         _set_fuzzy(search_params)
-
+        log.debug(f"Searching from before search {search_params}")
         return search_params
 
 
@@ -142,5 +165,27 @@ def _get_fuzzy_distance() -> int:
         distance = 2
     return distance
 
+
+def molecule_search_pubchem(search_params):
+    """
+    PubChem Molecule Search via Molecule Name when it is available.
+    This function sends the dict to the logic in controller folder to search for the given Molecule name using PubChem API
+    """
+
+    data_dict = {
+                'q': search_params['q'],
+                'fq': 'type:molecule'
+            }
+
+    try:
+        # Call custom search function
+        data_dict = molecule_name_search.custom_molecule_search({}, data_dict)
+
+        # log.debug(f"Search Results from Custom {data_dict}")
+
+        return data_dict
+
+    except tk.ValidationError as e:
+        return jsonify({'error': str(e)}), 400
 
 
