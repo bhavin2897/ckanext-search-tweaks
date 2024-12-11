@@ -28,20 +28,31 @@
 {# autocomplete addition for the search bar when the search is on default mode. On Advance Search, autocomplete doesnt work #}
 
 {% if h.search_autocomplete_enable_default_implementation() %}
-    <ul id="search-autocomplete--suggestion-box" class="suggestion-box">
-            {% set suggestion_groups = [
+        <ul id="search-autocomplete--suggestion-box" class="suggestion-box">
+            {% if type == 'molecule' %}
+             {% set suggestion_groups = [
+                ('datasets', 'Relevant molecule'),
+                ('categories','Browse filters')
+            ]
+            %}
+
+            {% else %}
+
+               {% set suggestion_groups = [
                 ('datasets', 'Relevant datasets'),
                 ('categories','Browse filters')
             ]
             %}
+
+            {% endif %}
 
             {% for section, label in suggestion_groups %}
                 <li data-section="{{ section }}" class="suggestion-section">
                     <ul class="suggestions" data-label="{{ _(label) }}"></ul>
                 </li>
             {% endfor %}
-</ul>
-{% endif %}
+        </ul>
+    {% endif %}
   <span class="input-group-btn">
     <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="{{ labels.search_button or _('Submit')}}">
 	<i class="fa fa-search"> </i>
@@ -56,7 +67,12 @@
      data-module-autocomplete-input="#field-giant-search">
 
 	<input type="text" class="form-control input-lg" id="field-giant-search"
-           name="q" value="{{ request.params.q | default('') }}" autocomplete="off" placeholder="{{ labels.search_placeholder or 'Search datasets' }}">
+           name="q" value="{{ request.params.q | default('') }}" autocomplete="off"
+           placeholder="{{ labels.search_placeholder
+    if labels.search_placeholder
+    else 'Search ' + type
+    if type
+    else 'Search ... ' }}" >
 
     {{ search_button }}
 </div>
