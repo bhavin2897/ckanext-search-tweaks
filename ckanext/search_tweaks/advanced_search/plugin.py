@@ -135,4 +135,5 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
         if solr_q:
             search_params.setdefault("q", "")
             search_params["q"] += " " + solr_q
+
         return search_params

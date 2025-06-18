@@ -74,11 +74,12 @@ class SearchTweaksPlugin(plugins.SingletonPlugin):
                 else:
                     log.warning("No valid data_dict['q'] returned from molecule_search_pubchem.")
         else:
-            log.debug("Search is empty and goes to default")
+            pass
+        #    log.debug("Search is empty and goes to default")
 
         _set_qf(search_params)
         _set_fuzzy(search_params)
-        log.debug(f"Searching from before search {search_params}")
+        # log.debug(f"Searching from before search {search_params}")
         return search_params
 
 
