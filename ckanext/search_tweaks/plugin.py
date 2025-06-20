@@ -172,7 +172,6 @@ def molecule_search_pubchem(search_params):
     PubChem Molecule Search via Molecule Name when it is available.
     This function sends the dict to the logic in controller folder to search for the given Molecule name using PubChem API
     """
-
     data_dict = {
                 'q': search_params['q'],
                 'fq': 'type:molecule'
