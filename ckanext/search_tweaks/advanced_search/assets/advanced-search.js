@@ -210,7 +210,7 @@ ckan.module("search-tweaks-advanced-search", function ($) {
     },
 
     /**
-     * Helper Method to Update Search Results
+     * Helper Method to Update Search Results to search
      */
     _updateSearchResults: function (results) {
       const resultsContainer = this.$("#search-autocomplete--suggestion-box");
