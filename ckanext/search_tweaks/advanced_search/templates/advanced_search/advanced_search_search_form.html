@@ -4,10 +4,12 @@
 {% asset "search_autocomplete/search_autocomplete-css" %}
 {% asset "search_autocomplete/search_autocomplete-js" %}
 
-<!-- Include jQuery and jQueryUI Accept here -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<!-- Include jQuery and jQuery UI Accept here -->
+
+<!-- NEW (local) -->
+<script src="{{ h.url_for_static('/vendor/jquery.min.js') }}"></script>
+<script src="{{ h.url_for_static('/vendor/jquery-ui.min.js') }}"></script>
+<link rel="stylesheet" href="{{ h.url_for_static('/vendor/jquery-ui.css') }}">
 
 {% set form_config = form_config|default(h.advanced_search_form_config())|tojson|forceescape %}
 {% set enable_solr = enable_solr|default(request.args.ext_solr_q | length > 0) %}
