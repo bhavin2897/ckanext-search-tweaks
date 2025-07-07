@@ -121,7 +121,7 @@ ckan.module("search-tweaks-advanced-search", function ($) {
       }
     },
 
-    teadown: function () {},
+    teardown: function () {},
 
     _onKeyUp: function (e) {
       if (e.key !== "Enter") {
