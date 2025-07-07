@@ -124,7 +124,7 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
     def get_helpers(self):
         return {
             "advanced_search_form_config": form_config,
-            "advanced_search_form_config_image" : form_config_image,
+            # "advanced_search_form_config_image" : form_config_image,
         }
 
     # IPackageController
