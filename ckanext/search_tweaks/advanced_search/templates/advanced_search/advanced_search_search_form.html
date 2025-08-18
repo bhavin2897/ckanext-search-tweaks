@@ -60,6 +60,9 @@
 </span>
 {% endset %}
 
+{% set repo_count, dataset_count, do_not_use = h.repositories_dataset_present_count() %}
+{% set advance_placeholder_search_text = "Search Across " ~ dataset_count ~ " Datasets & " ~ repo_count ~ " Repositories" %}
+
 {% set default_search_input %}
 <div class="input-group search-input-group search-autocomplete-wrapper"
      data-module="ckanext-search-autocomplete"
@@ -69,10 +72,8 @@
 	<input type="text" class="form-control input-lg" id="field-giant-search"
            name="q" value="{{ request.params.q | default('') }}" autocomplete="off"
            placeholder="{{ labels.search_placeholder
-    if labels.search_placeholder
-    else 'Search ' + type
-    if type
-    else 'Search ... ' }}" >
+                if labels.search_placeholder
+                else ('Search ' ~ type if type else advance_placeholder_search_text) }}">
 
     {{ search_button }}
 

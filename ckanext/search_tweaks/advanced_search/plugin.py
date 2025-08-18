@@ -5,6 +5,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import logging
 from ckan.exceptions import CkanConfigurationException
+from ckanext.statictheme import helpers
 
 log = logging.getLogger(__name__)
 
@@ -124,9 +125,9 @@ class AdvancedSearchPlugin(p.SingletonPlugin):
     def get_helpers(self):
         return {
             "advanced_search_form_config": form_config,
+            "repositories_dataset_present_count": helpers.repositories_dataset_present_count,
             # "advanced_search_form_config_image" : form_config_image,
         }
-
     # IPackageController
 
     def before_search(self, search_params: dict[str, Any]):
