@@ -1,5 +1,5 @@
 composite_search_styles:
-  filter: cssrewrite
+#  filters: cssrewrite
   output: search_tweaks/%(version)s_search_tweaks_advanced_search.css
   contents:
     - advanced-search.css

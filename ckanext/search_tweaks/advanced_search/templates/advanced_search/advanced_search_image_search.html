@@ -11,6 +11,7 @@ solr_syntax_url - URL for SOLR syntax article
 solr_syntax_blank - open SOLR syntax article in the new tab
 #}
 
+{% asset 'composite_search/composite_search' %}
 {% asset "search_tweaks_advanced_search/advanced_search" %}
 
 {% set form_config_image = form_config_image|default(h.advanced_search_form_config_image())|tojson|forceescape %}
